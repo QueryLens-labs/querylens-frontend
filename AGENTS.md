@@ -4,6 +4,10 @@
 
 Este repositorio contiene el cliente web de QueryLens: React, TypeScript, Vite y Tailwind CSS. No implementes funcionalidades nuevas ni rediseñes la aplicación salvo que la petición lo solicite. No cambies tecnologías, versiones ni dependencias sin necesidad justificada.
 
+## Documentation language
+
+Keep this and the sibling repository's README.md entirely in English. When editing a README, write the complete document in English. Do not change the application UI language unless requested.
+
 ## Forma de trabajar
 
 1. Inspecciona el código y las instrucciones antes de cambiarlo.

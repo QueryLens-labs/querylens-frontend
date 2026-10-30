@@ -1,30 +1,34 @@
 # QueryLens Frontend
 
-Frontend de QueryLens, construido con React, TypeScript, Vite y Tailwind CSS.
+The QueryLens web client is built with React, TypeScript, Vite, and Tailwind CSS.
 
-## Requisitos
+## Requirements
 
-- Node.js 20.19 o posterior y npm.
+- Node.js 20.19 or later and npm.
 
-## Desarrollo local
+## Local development
 
-Desde este directorio:
+From this directory:
 
-    npm ci
-    npm run dev
+```powershell
+npm ci
+npm run dev
+```
 
-Vite publica la aplicación en http://localhost:5173 y reenvía las solicitudes /api a http://localhost:8000. Para usar todas las funciones, arranca la API y PostgreSQL desde el repositorio hermano querylens-backend siguiendo su README.
+Vite serves the application at <http://localhost:5173> and forwards `/api` requests to <http://localhost:8000>. To use all features, start the API and PostgreSQL from the sibling `querylens-backend` repository by following its README.
 
-## Contrato con el backend
+## Backend contract
 
-El frontend llama GET /api/health y POST /api/analyze, con el formato definido por el backend en app/schemas.py. En desarrollo local, Vite hace proxy de /api a la API local. En Docker Compose, Nginx sirve el frontend y hace proxy de /api al servicio backend en la red interna. Mantén las rutas y los esquemas coordinados con querylens-backend; no dupliques validaciones SQL en el cliente.
+The frontend calls `GET /api/health` and `POST /api/analyze`, using the schemas defined in the backend's `app/schemas.py`. During local development, Vite proxies `/api` to the local API. In Docker Compose, Nginx serves the frontend and proxies `/api` to the backend service on the internal network. Keep routes and schemas coordinated with `querylens-backend`; do not duplicate SQL validation in the client.
 
-El roadmap general está en el repositorio backend: [TODO.md en GitHub](https://github.com/querylens-labs/querylens-backend/blob/main/TODO.md). En el workspace local se encuentra en ../querylens-backend/TODO.md.
+The project roadmap is maintained in the backend repository: [TODO.md on GitHub](https://github.com/querylens-labs/querylens-backend/blob/main/TODO.md). In the local workspace, it is available at `../querylens-backend/TODO.md`.
 
-La imagen docs/Interfaz.png se conserva como referencia visual original; no representa por sí misma la interfaz implementada en la Fase 1.
+The image `docs/Interfaz.png` is retained as the original visual reference; it does not, by itself, represent the Phase 1 implementation.
 
-## Compilación
+## Build
 
-    npm run build
+```powershell
+npm run build
+```
 
-Las instrucciones de desarrollo están en [AGENTS.md](AGENTS.md). Claude Code debe leer [CLAUDE.md](CLAUDE.md).
+Development instructions are in [AGENTS.md](AGENTS.md). Claude Code should read [CLAUDE.md](CLAUDE.md).
