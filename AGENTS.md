@@ -6,7 +6,7 @@ Este repositorio contiene el cliente web de QueryLens: React, TypeScript, Vite y
 
 ## Documentation language
 
-Keep this and the sibling repository's README.md entirely in English. When editing a README, write the complete document in English. Do not change the application UI language unless requested.
+Keep project documentation, including the roadmap in ../querylens-backend/TODO.md and both repositories' README.md files, entirely in English. When editing a README, write the complete document in English. Do not change the application UI language unless requested.
 
 ## Forma de trabajar
 
