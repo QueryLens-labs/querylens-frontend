@@ -27,6 +27,7 @@ export interface AnalyzeResult {
 export interface ApiHealth {
   service: string;
   database: string;
+  database_name: string | null;
   postgres_version: string | null;
 }
 

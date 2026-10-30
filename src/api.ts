@@ -12,7 +12,7 @@ async function readError(response: Response): Promise<string> {
   } catch {
     // The API may return a non-JSON gateway error.
   }
-  return `La solicitud falló (HTTP ${response.status}).`;
+  return `The request failed (HTTP ${response.status}).`;
 }
 
 export async function fetchHealth(): Promise<ApiHealth> {
