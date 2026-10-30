@@ -32,3 +32,15 @@ npm run build
 ```
 
 Development instructions are in [AGENTS.md](AGENTS.md). Claude Code should read [CLAUDE.md](CLAUDE.md).
+
+## License
+
+Copyright (c) 2026 J0x1N. All rights reserved.
+
+QueryLens is a personally owned project. Its source code
+is publicly available for viewing, but no open-source
+license is granted.
+
+Unauthorized use, modification, or redistribution of
+the source code is not permitted, except as allowed by
+applicable law or GitHub's Terms of Service.
