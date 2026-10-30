@@ -19,7 +19,7 @@ Vite publica la aplicación en http://localhost:5173 y reenvía las solicitudes 
 
 El frontend llama GET /api/health y POST /api/analyze, con el formato definido por el backend en app/schemas.py. En desarrollo local, Vite hace proxy de /api a la API local. En Docker Compose, Nginx sirve el frontend y hace proxy de /api al servicio backend en la red interna. Mantén las rutas y los esquemas coordinados con querylens-backend; no dupliques validaciones SQL en el cliente.
 
-El roadmap general está en el repositorio backend: [TODO.md en GitHub](https://github.com/QueryLens/querylens-backend/blob/main/TODO.md). En el workspace local se encuentra en ../querylens-backend/TODO.md.
+El roadmap general está en el repositorio backend: [TODO.md en GitHub](https://github.com/querylens-labs/querylens-backend/blob/main/TODO.md). En el workspace local se encuentra en ../querylens-backend/TODO.md.
 
 La imagen docs/Interfaz.png se conserva como referencia visual original; no representa por sí misma la interfaz implementada en la Fase 1.
 
