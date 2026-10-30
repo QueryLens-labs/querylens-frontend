@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import CodeMirror from "@uiw/react-codemirror";
+import CodeMirror, { Prec } from "@uiw/react-codemirror";
 import { PostgreSQL, sql } from "@codemirror/lang-sql";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { EditorView, keymap } from "@codemirror/view";
@@ -28,35 +28,25 @@ export function QueryAnalyzer({
     sql({ dialect: PostgreSQL }),
     EditorView.lineWrapping,
     EditorView.contentAttributes.of({ "aria-label": "SQL query editor" }),
-    keymap.of([{
+    Prec.high(keymap.of([{
       key: "Mod-Enter",
       run: () => {
-        if (!running) onAnalyze();
+        if (!running && query.trim()) onAnalyze();
         return true;
       },
-    }]),
-  ], [onAnalyze, running]);
+    }])),
+  ], [onAnalyze, query, running]);
 
   return (
-    <section className="panel analyzer-panel" aria-labelledby="analyzer-title">
-      <div className="panel-heading analyzer-heading">
-        <div className="panel-title-group">
-          <span className="panel-icon panel-icon--blue"><Icon name="query" size={18} /></span>
-          <div>
-            <h2 id="analyzer-title">Query Analyzer</h2>
-            <p>Write a read-only PostgreSQL query to inspect its execution plan.</p>
-          </div>
-        </div>
-        <span className="read-only-pill"><span /> READ ONLY</span>
+    <section className="analyzer-panel" aria-labelledby="analyzer-title">
+      <div className="analyzer-heading">
+        <h1 id="analyzer-title">Query Analyzer</h1>
+        <p>Write a query, analyze its execution plan and understand how PostgreSQL runs it.</p>
       </div>
 
       <div className="analyzer-body">
         <div className="editor-column">
           <div className="editor-window">
-            <div className="editor-toolbar">
-              <div className="editor-file"><span className="file-dot" /> query.sql</div>
-              <span>PostgreSQL</span>
-            </div>
             <CodeMirror
               value={query}
               onChange={onQueryChange}
@@ -72,20 +62,12 @@ export function QueryAnalyzer({
               editable={!running}
               aria-label="SQL query editor"
               className="sql-code-editor"
-              height="242px"
+              height="328px"
             />
-            <div className="editor-foot">
-              <span>Ctrl / ⌘ + Enter to run</span>
-              <span>{query.length.toLocaleString("en-US")} characters</span>
-            </div>
           </div>
-          <div className="editor-actions">
+          <div className="editor-foot">
             <span className="execution-note"><span className="info-mark">i</span> EXPLAIN ANALYZE executes the query</span>
-            <button className="run-button" type="button" onClick={onAnalyze} disabled={running || !query.trim()}>
-              {running ? <span className="spinner" /> : <Icon name="play" size={15} />}
-              {running ? "Analyzing…" : "Run Analysis"}
-              {!running && <span className="button-shortcut">⌘ ↵</span>}
-            </button>
+            <span>{query.length.toLocaleString("en-US")} characters</span>
           </div>
           {error && !running && (
             <div className="analyzer-error" role="alert">
@@ -95,7 +77,15 @@ export function QueryAnalyzer({
           )}
           {running && <div className="analyzer-running" aria-live="polite"><span className="spinner" /> PostgreSQL is analyzing the query…</div>}
         </div>
-        <MetricsPanel query={query} result={result} />
+        <div className="analyzer-controls">
+          <div className="editor-actions">
+            <button className="run-button" type="button" onClick={onAnalyze} disabled={running || !query.trim()}>
+              {running ? <span className="spinner" /> : <Icon name="play" size={15} />}
+              <span>{running ? "Analyzing…" : "Run Analysis"}<small>Ctrl / ⌘ + Enter</small></span>
+            </button>
+          </div>
+          <MetricsPanel query={query} result={result} />
+        </div>
       </div>
     </section>
   );

@@ -76,15 +76,6 @@ function App() {
           onClose={() => setMobileSidebarOpen(false)}
         />
         <main className="dashboard" id="workspace">
-          <div className="dashboard-heading">
-            <div>
-              <span className="section-kicker">WORKSPACE / QUERY ANALYZER</span>
-              <h1>Query Analyzer</h1>
-              <p>Inspect PostgreSQL execution plans and understand query performance.</p>
-            </div>
-            <span className="workspace-scope"><span /> Local demo database</span>
-          </div>
-
           <div className="dashboard-grid">
             <QueryAnalyzer
               query={query}
@@ -96,7 +87,6 @@ function App() {
             />
             <DatabaseSchemaPanel />
             <ExecutionPlan
-              query={query}
               result={result}
               error={error}
               running={running}

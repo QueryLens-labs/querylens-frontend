@@ -28,7 +28,7 @@ export function TopBar({ connectionState, health, onOpenSidebar }: TopBarProps) 
       </button>
       <a className="brand" href="#workspace" aria-label="QueryLens home">
         <span className="brand-mark"><Icon name="database" size={25} /></span>
-        <span className="brand-name">Query<span>Lens</span></span>
+        <span className="brand-name">QueryLens</span>
       </a>
       <p className="brand-tagline">Understand. Optimize. Go faster.</p>
 

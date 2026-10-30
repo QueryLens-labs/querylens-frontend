@@ -87,6 +87,7 @@ export function Sidebar({
         </div>
 
         <section className="sidebar-status-card" aria-label="Database status">
+          <p className="sidebar-status-title">Database Status</p>
           <div className="sidebar-status-heading">
             <span className={`connection-dot connection-dot--${connectionState}`} />
             <span>{connectionStatusText(connectionState)}</span>

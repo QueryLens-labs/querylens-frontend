@@ -54,22 +54,25 @@ function PlanTreeNode({ node, id, collapsedIds, onToggle }: {
             <strong className="node-name">{node.node_type}</strong>
             {details && <span className="node-detail">{details}</span>}
           </div>
-          <span className="node-cost">
-            <small>Cost</small>{node.total_cost === null ? "—" : formatNumber(node.total_cost, 2)}
-          </span>
         </div>
         <div className="node-stats">
-          <span><small>Est. rows</small><b>{formatNumber(node.estimated_rows)}</b></span>
-          <span><small>Actual rows</small><b>{formatNumber(node.actual_rows)}</b></span>
           <span><small>Actual time</small><b>{node.actual_total_time_ms === null ? "—" : `${formatNumber(node.actual_total_time_ms, 3)} ms`}</b></span>
-          {node.actual_loops !== null && <span><small>Loops</small><b>{formatNumber(node.actual_loops)}</b></span>}
-          {(node.shared_hit_blocks !== null || node.shared_read_blocks !== null) && (
-            <span><small>Buffers hit / read</small><b>{formatNumber(node.shared_hit_blocks)} / {formatNumber(node.shared_read_blocks)}</b></span>
-          )}
-          {node.rows_removed_by_filter !== null && (
-            <span><small>Rows filtered</small><b>{formatNumber(node.rows_removed_by_filter)}</b></span>
-          )}
+          <span><small>Rows</small><b>{formatNumber(node.actual_rows)}</b></span>
+          <span><small>Cost (est.)</small><b>{formatNumber(node.total_cost, 2)}</b></span>
+          <span><small>Est. rows</small><b>{formatNumber(node.estimated_rows)}</b></span>
         </div>
+        {(node.actual_loops !== null || node.shared_hit_blocks !== null || node.shared_read_blocks !== null || node.rows_removed_by_filter !== null) && (
+          <details className="node-extra">
+            <summary>Details</summary>
+            <div className="node-extra-content">
+              {node.actual_loops !== null && <span>Loops: {formatNumber(node.actual_loops)}</span>}
+              {(node.shared_hit_blocks !== null || node.shared_read_blocks !== null) && (
+                <span>Buffers hit / read: {formatNumber(node.shared_hit_blocks)} / {formatNumber(node.shared_read_blocks)}</span>
+              )}
+              {node.rows_removed_by_filter !== null && <span>Rows filtered: {formatNumber(node.rows_removed_by_filter)}</span>}
+            </div>
+          </details>
+        )}
       </article>
       {hasChildren && !isCollapsed && (
         <ul className="plan-children">
@@ -129,29 +132,16 @@ function PlanTree({ result }: { result: AnalyzeResult }) {
 }
 
 interface ExecutionPlanProps {
-  query: string;
   result: AnalyzeResult | null;
   error: string | null;
   running: boolean;
 }
 
-export function ExecutionPlan({ query, result, error, running }: ExecutionPlanProps) {
+export function ExecutionPlan({ result, error, running }: ExecutionPlanProps) {
   const [activeTab, setActiveTab] = useState<ResultTab>("plan");
-  const queryType = /^\s*(?:--[^\n]*\n\s*)*WITH\b/i.test(query) ? "WITH query" : "SELECT query";
 
   return (
-    <section className="panel results-panel" aria-labelledby="results-title">
-      <div className="panel-heading results-heading">
-        <div className="panel-title-group">
-          <span className="panel-icon panel-icon--violet"><Icon name="execution" size={18} /></span>
-          <div>
-            <h2 id="results-title">Execution Analysis</h2>
-            <p>{result ? "Plan and metrics returned by PostgreSQL" : "Your execution plan will appear here"}</p>
-          </div>
-        </div>
-        {result && <span className="result-badge"><span /> ANALYSIS COMPLETE</span>}
-        {running && <span className="running-badge"><span className="spinner" /> RUNNING</span>}
-      </div>
+    <section className="results-panel" aria-labelledby="results-title">
       <div className="result-tabs" role="tablist" aria-label="Analysis results">
         <button
           className={`result-tab${activeTab === "plan" ? " result-tab--active" : ""}`}
@@ -171,16 +161,21 @@ export function ExecutionPlan({ query, result, error, running }: ExecutionPlanPr
         ><Icon name="raw" size={15} /> Raw JSON</button>
       </div>
 
+      <div className="panel plan-content-panel">
+        <div className="results-heading">
+          <div>
+            <h2 id="results-title">Execution Plan</h2>
+            <p>Hierarchical view of how PostgreSQL executes your query.</p>
+          </div>
+          {result && <span className="result-badge"><span /> COMPLETE</span>}
+          {running && <span className="running-badge"><span className="spinner" /> RUNNING</span>}
+        </div>
       <div className="results-content">
         {running && <div className="result-state"><span className="large-spinner" /><strong>Analyzing query</strong><span>Waiting for the PostgreSQL execution plan…</span></div>}
         {!running && error && <div className="plan-empty-state plan-error-state" role="alert"><span className="error-icon">!</span><strong>Analysis failed</strong><p>{error}</p></div>}
         {!running && !error && !result && <div className="plan-empty-state"><span className="empty-plan-icon"><Icon name="execution" size={22} /></span><strong>Ready to analyze</strong><p>Run your read-only query to view the real plan from PostgreSQL.</p></div>}
         {!running && !error && result && activeTab === "plan" && (
           <>
-            <div className="result-summary">
-              <span className="summary-query-type"><span>{queryType}</span> · {result.root.node_type}</span>
-              <span>{result.root.actual_rows === null ? "Actual rows unavailable" : `${formatNumber(result.root.actual_rows)} root rows`}</span>
-            </div>
             <PlanTree key={JSON.stringify(result.root)} result={result} />
             <p className="cost-note"><Icon name="pending" size={13} /> Cost values are PostgreSQL estimates in planner units, not elapsed time.</p>
           </>
@@ -188,6 +183,7 @@ export function ExecutionPlan({ query, result, error, running }: ExecutionPlanPr
         {!running && !error && result && activeTab === "raw" && (
           <pre className="raw-json-view" aria-label="Raw PostgreSQL plan JSON">{JSON.stringify(result, null, 2)}</pre>
         )}
+      </div>
       </div>
     </section>
   );
