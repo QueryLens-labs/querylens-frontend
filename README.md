@@ -31,4 +31,10 @@ The image `docs/Interfaz.png` is retained as the original visual reference; it d
 npm run build
 ```
 
-Development instructions are in [AGENTS.md](AGENTS.md). Claude Code should read [CLAUDE.md](CLAUDE.md).
+## Third-party notices
+
+Icons use lucide-react. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for the Lucide and Feather license notices.
+
+## License
+
+QueryLens is licensed under the [MIT License](LICENSE). Third-party dependencies retain their own licenses.
